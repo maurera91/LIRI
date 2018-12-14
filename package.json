@@ -1,0 +1,20 @@
+{
+  "name": "LIRI",
+  "version": "1.0.0",
+  "description": "A node command line application that uses the bandisintown, Spotify and OMDB API's. Created for homework 10 of the Northwestern Coding Bootcamp",
+  "main": "LIRI.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maurera91/LIRI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maurera91/LIRI/issues"
+  },
+  "homepage": "https://github.com/maurera91/LIRI#readme"
+}

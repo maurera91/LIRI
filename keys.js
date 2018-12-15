@@ -1,4 +1,3 @@
-js
 console.log('this is loaded');
 
 module.exports.spotify_keys = {

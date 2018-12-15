@@ -1,9 +1,9 @@
 require("dotenv").config();
-const keys = require("./key.js");
+const keys = require("./keys.js");
 const axios = require("axios");
 const Spotify = require("node-spotify-api");
 const command = process.argv[2]
-const query = process.argv[3];
+const query = process.argv.slice(3).join(" ");
 const fs = require("fs");
 
 var spotify = new Spotify({
@@ -15,15 +15,15 @@ var LIRI = function(command,query){
     if (command =="concert-this"){
         axios.get(`http://rest.bandsintown.com/artists/${query}/events`).then(
             function(response){
-                console.log(response.venue.name);
-                console.log(`${response.venue.city}, ${response.venue.region}`);
-                console.log(moment(response.datetime).format("MM/DD/YYYY"));
+                console.log(response.data.venue.name);
+                console.log(`${response.data.venue.city}, ${response.data.venue.region}`);
+                console.log(moment(response.data.datetime).format("MM/DD/YYYY"));
             }
         )
     }
     if (command=="spotify-this-song"){
         spotify.search({type: "track", query: query}).then(function(response){
-            console.log(response)
+            console.log(response.tracks.items[0]);
         }).catch(function(err){
             console.log(err);
         });
@@ -31,14 +31,21 @@ var LIRI = function(command,query){
 
     }
     if (command=="movie-this"){
-        axios.get(`http://www.omdbapi.com/?t=${query}&y=&plot=short&apikey=${keys.OMDB.key}`).then(
+        axios.get(`http://www.omdbapi.com/?t=${query}&y=&plot=short&apikey=${"trilogy"}`).then(
             function(response){
-                console.log(response);
+                console.log(`Title: ${response.data.Title}`);
+                console.log(`Date Released: ${response.data.Released}`);
+                console.log(`IMDB rating: ${response.data.imdbRating}`);
+                console.log(`Rotten Tomatoes: ${response.data.Ratings[1].Value}`);
+                console.log(`Country: ${response.data.Country}`);
+                console.log(`Language: ${response.data.Language}`);
+                console.log(`Plot: ${response.data.Plot}`);
+                console.log(`Actors: ${response.data.Actors}`);
             }
         );
 
     }
-    if (process.argv[2]=="do-what-it-says"){
+    if (command=="do-what-it-says"){
         fs.readFile("movies.txt", "utf8", function(error, data) {
 
             // If the code experiences any errors it will log the error to the console.
@@ -57,8 +64,8 @@ var LIRI = function(command,query){
         });
 
     }
-    else{
-        console.log("Not a Command!\nCommands:\nconcert-this\nspotify-this-song\nmovie-this\ndo-what-it-says")
-    }
+    // else{
+    //     console.log("Not a Command!\nCommands:\nconcert-this\nspotify-this-song\nmovie-this\ndo-what-it-says")
+    // }
 }
 LIRI(command,query);

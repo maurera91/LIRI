@@ -2,6 +2,7 @@ require("dotenv").config();
 const keys = require("./keys.js");
 const axios = require("axios");
 const Spotify = require("node-spotify-api");
+const moment = require("moment")
 const command = process.argv[2]
 const query = process.argv.slice(3).join(" ");
 const fs = require("fs");
@@ -12,12 +13,19 @@ var spotify = new Spotify({
 })
 
 var LIRI = function(command,query){
+    if( command != "do-what-it-says"){
     console.log("-------------------------------------")
+    }
     if (command =="concert-this"){
-        axios.get(`http://rest.bandsintown.com/artists/${query}/events&key=codingbootcamp.trilogy`).then(
+        axios.get(`http://rest.bandsintown.com/artists/${query}/events/?app_id=codingbootcamp`).then(
             function(response){
-                console.log(`${response.data.venue.city}, ${response.data.venue.region}`);
-                console.log(moment(response.data.datetime).format("MM/DD/YYYY"));
+                for( let i=0; i<3; i++){
+                console.log(`${response.data[i].venue.name}`)
+                console.log(`${response.data[i].venue.city}, ${response.data[i].venue.region}`);
+                console.log(moment(response.data[i].datetime).format("MM/DD/YYYY"));
+                console.log("-------------------------------------")
+                }
+
             }
         )
     }
@@ -68,6 +76,7 @@ var LIRI = function(command,query){
             else{
                 LIRI(dataArr[0],dataArr[1]);
             }
+            
         
         });
 

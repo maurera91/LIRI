@@ -8,8 +8,8 @@ const query = process.argv.slice(3).join(" ");
 const fs = require("fs");
 
 var spotify = new Spotify({
-    id: "36a5f65e53d74f6a904d4ecbda91b990",
-    secret: "198547b3ed104bff9af737d30d548031"
+    id: keys.spotify_keys.id,
+    secret: keys.spotify_keys.secret
 })
 
 var LIRI = function(command,query){
@@ -17,7 +17,7 @@ var LIRI = function(command,query){
     console.log("-------------------------------------")
     }
     if (command =="concert-this"){
-        axios.get(`http://rest.bandsintown.com/artists/${query}/events/?app_id=codingbootcamp`).then(
+        axios.get(`http://rest.bandsintown.com/artists/${query}/events/?app_id=${keys.band_Key.key}`).then(
             function(response){
                 for( let i=0; i<3; i++){
                 console.log(`${response.data[i].venue.name}`)
@@ -46,7 +46,7 @@ var LIRI = function(command,query){
 
     }
     else if (command=="movie-this"){
-        axios.get(`http://www.omdbapi.com/?t=${query}&y=&plot=short&apikey=${"trilogy"}`).then(
+        axios.get(`http://www.omdbapi.com/?t=${query}&y=&plot=short&apikey=${keys.OMDB.key}`).then(
             function(response){
                 console.log(`Title: ${response.data.Title}`);
                 console.log(`Date Released: ${response.data.Released}`);
@@ -86,4 +86,5 @@ var LIRI = function(command,query){
      }
      
 }
+
 LIRI(command,query);

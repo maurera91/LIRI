@@ -7,3 +7,7 @@ module.exports.spotify_keys = {
 module.exports.OMDB = {
     key: process.env.OMDB_KEY
 }
+module.exports.band_Key = {
+    key: process.env.BAND_KEY
+
+}

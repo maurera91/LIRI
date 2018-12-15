@@ -12,25 +12,32 @@ var spotify = new Spotify({
 })
 
 var LIRI = function(command,query){
+    console.log("-------------------------------------")
     if (command =="concert-this"){
-        axios.get(`http://rest.bandsintown.com/artists/${query}/events`).then(
+        axios.get(`http://rest.bandsintown.com/artists/${query}/events&key=codingbootcamp.trilogy`).then(
             function(response){
-                console.log(response.data.venue.name);
                 console.log(`${response.data.venue.city}, ${response.data.venue.region}`);
                 console.log(moment(response.data.datetime).format("MM/DD/YYYY"));
             }
         )
     }
-    if (command=="spotify-this-song"){
+    else if (command=="spotify-this-song"){
         spotify.search({type: "track", query: query}).then(function(response){
-            console.log(response.tracks.items[0]);
+            
+            console.log(`Artist: ${response.tracks.items[0].album.artists[0].name}`);
+            console.log(`Song Name: ${response.tracks.items[0].name}`);
+            console.log(`Album Name: ${response.tracks.items[0].album.name}`);
+            console.log(`Preview Link: ${response.tracks.items[0].external_urls.spotify}`)
+            console.log("-------------------------------------")
+            
+
         }).catch(function(err){
             console.log(err);
         });
 
 
     }
-    if (command=="movie-this"){
+    else if (command=="movie-this"){
         axios.get(`http://www.omdbapi.com/?t=${query}&y=&plot=short&apikey=${"trilogy"}`).then(
             function(response){
                 console.log(`Title: ${response.data.Title}`);
@@ -41,12 +48,13 @@ var LIRI = function(command,query){
                 console.log(`Language: ${response.data.Language}`);
                 console.log(`Plot: ${response.data.Plot}`);
                 console.log(`Actors: ${response.data.Actors}`);
+                console.log("-------------------------------------")
             }
         );
 
     }
-    if (command=="do-what-it-says"){
-        fs.readFile("movies.txt", "utf8", function(error, data) {
+    else if (command=="do-what-it-says"){
+        fs.readFile("random.txt", "utf8", function(error, data) {
 
             // If the code experiences any errors it will log the error to the console.
             if (error) {
@@ -64,8 +72,9 @@ var LIRI = function(command,query){
         });
 
     }
-    // else{
-    //     console.log("Not a Command!\nCommands:\nconcert-this\nspotify-this-song\nmovie-this\ndo-what-it-says")
-    // }
+    else{
+         console.log("Not a Command!\nCommands:\nconcert-this\nspotify-this-song\nmovie-this\ndo-what-it-says")
+     }
+     
 }
 LIRI(command,query);
